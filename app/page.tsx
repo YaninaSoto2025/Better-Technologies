@@ -175,11 +175,11 @@ const ChatSection = () => {
             Start your 72h validation
           </span>
           <span className="text-red-600 text-sm font-mono tracking-widest uppercase mb-3 block">
-            "We were told the future would be built somewhere else. We chose to prove them wrong!"
-          </span>
+  &quot;We were told the future would be built somewhere else. We chose to prove them wrong!&quot;
+</span>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
-            Let's build the future.<span className="text-blue-600 font-black italic">Today.</span>
-          </h2>
+  Let&apos;s build the future.<span className="text-blue-600 font-black italic">Today.</span>
+</h2>
         </div>
 
         <div className="relative bg-white border border-slate-200 rounded-3xl p-8 md:p-12 shadow-xl transition-all hover:border-blue-600/30">
