@@ -3,6 +3,132 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from 'framer-motion';
 
+// --- NEWS SECTION COMPONENT ---
+const NewsSection = () => {
+  
+  const [loading, setLoading] = React.useState(true);
+  const [articles, setArticles] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      // Ahora llamamos a nuestra propia ruta interna
+      const response = await fetch('/api/news');
+      const data = await response.json();
+
+      if (data.articles && data.articles.length > 0) {
+        const bbc = data.articles.find((a: any) => a.source.name.toLowerCase().includes('bbc'));
+        const cnn = data.articles.find((a: any) => a.source.name.toLowerCase().includes('cnn'));
+        const reuters = data.articles.find((a: any) => a.source.name.toLowerCase().includes('reuters'));
+
+        let selection = [bbc, cnn, reuters].filter(Boolean);
+
+        if (selection.length < 3) {
+          const fillers = data.articles.filter((a: any) => !selection.includes(a));
+          selection = [...selection, ...fillers].slice(0, 3);
+        }
+
+        setArticles(selection);
+      }
+    } catch (error) {
+      console.error("Error local fetch:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+    fetchNews();
+  }, []);
+   
+
+  if (loading) return <div className="py-20 text-center text-slate-400 uppercase tracking-widest text-[10px] font-bold">Loading Intelligence Feed...</div>;
+
+  return (
+    <section className="py-24 bg-white border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-8">
+          
+          {/* 1. Espaciador para centrar en Desktop */}
+          <div className="hidden md:block w-48"></div>
+
+          {/* 2. Títulos centrados */}
+          <div className="flex-1 flex flex-col items-center text-center">
+            <div className="mt-8 inline-flex flex-col items-center">
+              <p className="text-slate-400 uppercase tracking-[0.2em] text-[10px] mb-2 font-bold">Real Time Certainty (RTC)</p>
+              <p className="text-3xl font-light border-b-2 border-blue-600 pb-2 text-slate-900 uppercase">Our kitchen is always open.</p>
+            </div>
+            <span className="text-blue-600 font-black uppercase tracking-[0.3em] text-xs mt-6 mb-4 block italic">Global Intelligence Feed</span>
+            <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-none">
+              Stay ahead of the <br /> <span className="text-blue-600 italic underline decoration-slate-200">Evolution.</span>
+            </h2>
+          </div>
+
+          {/* 3. Live Updates a la derecha en Desktop */}
+          <div className="text-center md:text-right md:w-48">
+            <p className="text-slate-400 font-mono text-[10px] uppercase tracking-widest">Live updates // April 2026</p>
+            <div className="flex gap-2 justify-center md:justify-end mt-2 items-center">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              <span className="text-[10px] font-black text-slate-900 uppercase">System Active</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Grid de noticias  */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full min-h-[100px] clear-both relative z-20">          {articles.map((article: any, index: number) => (
+            <motion.a
+  key={index}
+  href={article.url}
+  target="_blank"
+  rel="noopener noreferrer"
+  
+  className="group border border-slate-100 rounded-3xl overflow-hidden hover:border-blue-600/30 hover:shadow-2xl transition-all duration-500 bg-white flex flex-col"
+>
+  {/* IMAGEN DE LA NOTICIA */}
+  <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+    {article.urlToImage ? (
+      <img 
+        src={article.urlToImage} 
+        alt={article.title}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+      />
+    ) : (
+      <div className="w-full h-full flex items-center justify-center bg-slate-200">
+        <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">No Preview Available</span>
+      </div>
+    )}
+    <div className="absolute top-4 left-4">
+      <span className="text-[9px] font-black text-white bg-blue-600 px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
+        {article.source.name}
+      </span>
+    </div>
+  </div>
+
+  {/* CONTENIDO DE LA NOTICIA */}
+  <div className="p-8 flex-1 flex flex-col justify-between">
+    <div>
+      <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight line-clamp-2">
+        {article.title}
+      </h3>
+      <p className="text-slate-500 text-xs leading-relaxed mb-6 line-clamp-2 font-medium">
+        {article.description || "Click to read the full coverage of this digital transformation update."}
+      </p>
+    </div>
+    
+    <div className="flex justify-between items-center pt-4 border-t border-slate-50">
+      <span className="text-[10px] font-bold uppercase text-slate-400">
+        {new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+      </span>
+      <span className="text-blue-600 font-black text-[10px] uppercase tracking-widest group-hover:translate-x-1 transition-transform">Read →</span>
+    </div>
+  </div>
+</motion.a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- CHAT SECTION COMPONENT ---
 const ChatSection = () => {
   const [step, setStep] = useState<number>(1);
@@ -178,18 +304,18 @@ export default function Home() {
       </section>
 
       {/* WHAT WE ARE */}
-      <section id="what-we-are" className="py-40 px-6 text-center bg-white border-b border-slate-100">
-        <div className="max-w-5xl mx-auto">
+<section id="what-we-are" className="py-20 px-6 text-center bg-white border-b border-slate-100">
+          <div className="max-w-5xl mx-auto">
           <h2 className="text-blue-600 uppercase tracking-widest text-xs font-bold mb-8">What we are</h2>
           <p className="text-4xl md:text-6xl font-bold max-w-5xl mx-auto leading-tight tracking-tight text-slate-800 italic">
             "We are a Public Venture Lab. <br /> We build and validate businesses in public."
           </p>
-          <div className="mt-20 inline-flex flex-col items-center">
-            <p className="text-slate-400 uppercase tracking-[0.2em] text-[10px] mb-2 font-bold">Real Time Certainty (RTC)</p>
-            <p className="text-3xl font-light border-b-2 border-blue-600 pb-2 text-slate-900 uppercase">Our kitchen is always open.</p>
-          </div>
+          
         </div>
       </section>
+
+     {/* ---  FEED DE NOTICIAS  --- */}
+      <NewsSection />
 
       {/* TARGET CLIENT: MITTELSTAND */}
       <section id="mittelstand" className="py-40 px-6 bg-slate-50 border-y border-slate-200">
