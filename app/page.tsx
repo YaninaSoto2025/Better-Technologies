@@ -3,6 +3,86 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from 'framer-motion';
 
+
+
+const team = [
+  {
+    name: "Diego Vargas",
+    role: "Founder & Head of Project",
+    desc: "The mind behind the 72h framework. Diego built Better Technologies from a conviction: that real innovation doesn't need a million-dollar budget — it needs relentless execution. He leads the vision, the team, and every sprint from day one.",
+    initials: "DV",
+    photo: "/team/diego.jpg",      
+    linkedin: "https://www.linkedin.com/in/diegoe-vargas/",
+  },
+  {
+    name: "Charlotte Götz",
+    role: "Head of Marketing",
+    desc: "Charlotte turns bold ideas into market movements. With a sharp eye for positioning and a data-driven approach to growth, she ensures every product we build doesn't just work — it gets noticed, adopted, and remembered.",
+    initials: "CG",
+    photo: "/charlotte.jpeg",   
+    linkedin: "https://www.linkedin.com/in/charlotte-goetz-public/",
+  },
+  {
+    name: "Ezequiel Alonso",
+    role: "Backend Developer",
+    desc: "Ezequiel is the engine room of every product we ship. He architects scalable, production-ready systems at startup speed — writing clean, fast, reliable code that makes the impossible 72h timelines actually possible.",
+    initials: "EA",
+    photo: "/team/ezequiel.jpg",    
+    linkedin: "https://linkedin.com/",
+  },
+  {
+    name: "Victor Menendez",
+    role: "Frontend Developer",
+    desc: "Victor is the one who makes it beautiful and fast. He crafts interfaces that feel inevitable — intuitive, polished, and ready for real users from the very first sprint. He doesn't just build UIs, he builds experiences.",
+    initials: "VM",
+    photo: "/team/victor.jpg",      
+    linkedin: "https://www.linkedin.com/in/demenezesvictor/",
+  },
+  {
+    name: "Yanina Soto",
+    role: "Data Scientist",
+    desc: "Yanina speaks the language of data fluently — and translates it into decisions that matter. She extracts signal from noise, builds intelligence layers into every product, and ensures that what we ship isn't just functional — it's smart.",
+    initials: "YS",
+    photo: "/team/yanina.jpg",      
+    linkedin: "https://www.linkedin.com/in/yanina-soto/",
+  },
+];
+
+// LINKEDIN ICON 
+const LinkedInIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="24" height="24" rx="4" fill="#0A66C2" />
+    <path
+      d="M7 9H5v10h2V9zm-1-1.5A1.25 1.25 0 1 0 6 5a1.25 1.25 0 0 0 0 2.5zM19 13.2c0-2.3-1.1-4.2-3.3-4.2a3.2 3.2 0 0 0-2.7 1.4V9H11v10h2v-5.4c0-1.4.7-2.3 1.9-2.3 1.1 0 1.6.8 1.6 2.2V19h2v-5.8z"
+      fill="#fff"
+    />
+  </svg>
+);
+
+//  AVATAR 
+const Avatar = ({ member }: { member: (typeof team)[0] }) => {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-slate-100 flex-shrink-0 bg-blue-50 flex items-center justify-center">
+      {!imgError ? (
+        <Image
+          src={member.photo}
+          alt={member.name}
+          fill
+          sizes="64px"
+          className="object-cover"
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        <span className="text-blue-600 font-black text-lg">{member.initials}</span>
+      )}
+    </div>
+  );
+};
+
+//  ABOUT SECTION 
+
 // --- NEWS SECTION COMPONENT ---
 const NewsSection = () => {
   
@@ -239,16 +319,19 @@ const ChatSection = () => {
 // --- MAIN HOME COMPONENT ---
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+const [selected, setSelected] = useState<number | null>(null); 
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
   }, [isOpen]);
 
+  
   const menuItems = [
     { name: "Home", href: "#top" },
     { name: "What we are", href: "#what-we-are" },
     { name: "Mittelstand", href: "#mittelstand" },
     { name: "Pricing", href: "#pricing" },
+    { name: "About", href: "#about" },
   ];
 
   return (
@@ -414,6 +497,101 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+     {/* ABOUT US */}         
+  
+    <section id="about" className="py-24 px-6 bg-white border-t border-slate-100">
+      <div className="max-w-4xl mx-auto">
+
+        {/* Eyebrow */}
+        <p className="text-blue-600 uppercase tracking-[0.25em] text-[10px] font-black mb-3">
+          About our Team
+        </p>
+
+        {/* Main title */}
+        <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-none uppercase mb-6">
+          High{" "}
+          <em className="italic underline decoration-blue-100">Performance execution team</em>{" "}
+          built in high 
+          <br />
+          pressure environments.
+        </h2>
+
+        {/* Quote block */}
+        <div className="border-l-[3px] border-blue-600 pl-5 bg-slate-50 py-4 pr-5 rounded-r-2xl mb-8">
+          <p className="text-slate-900 font-black italic text-sm leading-relaxed tracking-tight">
+            &ldquo;We were told the future would be built somewhere else.
+            <br />
+            <span className="text-blue-600">We chose to prove them wrong.&rdquo;</span>
+          </p>
+        </div>
+
+        {/* Profile card */}
+        <AnimatePresence mode="wait">
+          {selected !== null && (
+            <motion.div
+              key={selected}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center gap-5 border border-slate-100 rounded-3xl p-5 mb-6 hover:border-blue-600/30 transition-colors duration-300"
+            >
+              <Avatar member={team[selected]} />
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-slate-900 font-black uppercase tracking-tight text-sm">
+                      {team[selected].name}
+                    </p>
+                    <p className="text-blue-600 font-black uppercase tracking-[0.15em] text-[10px] mt-0.5 mb-2">
+                      {team[selected].role}
+                    </p>
+                  </div>
+
+                  {/* LinkedIn button */}
+                  <a
+                    href={team[selected].linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1.5 hover:border-blue-600 hover:bg-blue-50 transition-all flex-shrink-0"
+                  >
+                    <LinkedInIcon />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600">
+                      LinkedIn
+                    </span>
+                  </a>
+                </div>
+
+                <p className="text-slate-500 text-xs leading-relaxed font-medium">
+                  {team[selected].desc}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Pills */}
+        <div className="flex flex-wrap gap-2">
+          {team.map((member, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setSelected(selected === i ? null : i)}
+              className={`text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full border-2 transition-all duration-200 active:scale-95
+                ${selected === i
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-slate-500 border-slate-200 hover:border-blue-600 hover:text-blue-600"
+                }`}
+            >
+              {member.name.split(" ")[0]} {member.name.split(" ")[1]}
+            </button>
+          ))}
+        </div>
+
+      </div>
+    </section>
 
       {/* CHAT SECTION INTEGRATION */}
       <ChatSection />
