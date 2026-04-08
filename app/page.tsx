@@ -332,6 +332,7 @@ const [selected, setSelected] = useState<number | null>(null);
     { name: "Mittelstand", href: "#mittelstand" },
     { name: "Pricing", href: "#pricing" },
     { name: "About", href: "#about" },
+    { name: "Blog", href: "/blog" },
   ];
 
   return (
@@ -595,6 +596,23 @@ const [selected, setSelected] = useState<number | null>(null);
 
       {/* CHAT SECTION INTEGRATION */}
       <ChatSection />
+
+      {/* BLOG CTA SECTION */}
+      <section className="py-24 px-6 bg-gradient-to-br from-blue-600 to-blue-700">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter">
+            Stay Updated with <span className="italic underline decoration-white decoration-2">Our Latest Insights</span>
+          </h2>
+          <p className="text-lg text-blue-100 mb-10 font-medium max-w-2xl mx-auto">
+            Explore our blog for industry trends, tech updates, and innovation stories from the Better Technologies team.
+          </p>
+          <a href="/blog" className="inline-block">
+            <button type="button" className="px-12 py-5 bg-white text-blue-600 rounded-full font-black uppercase tracking-widest hover:bg-blue-50 transition-all shadow-2xl shadow-blue-900/30 text-lg hover:scale-105 active:scale-95">
+              Read the Blog
+            </button>
+          </a>
+        </div>
+      </section>
 
       {/* FOOTER */}
       <footer className="py-20 text-center border-t border-slate-100 bg-white">
