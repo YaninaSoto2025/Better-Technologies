@@ -11,7 +11,7 @@ const team = [
     role: "Founder & Head of Project",
     desc: "The mind behind the 72h framework. Diego built Better Technologies from a conviction: that real innovation doesn't need a million-dollar budget — it needs relentless execution. He leads the vision, the team, and every sprint from day one.",
     initials: "DV",
-    photo: "/team/diego.jpg",      
+    photo: "/diego.jpeg",      
     linkedin: "https://www.linkedin.com/in/diegoe-vargas/",
   },
   {
@@ -92,23 +92,42 @@ const NewsSection = () => {
   React.useEffect(() => {
   const fetchNews = async () => {
     try {
-      // Ahora llamamos a nuestra propia ruta interna
-      const response = await fetch('/api/news');
-      const data = await response.json();
+      const [externalResponse, localResponse] = await Promise.all([
+        fetch('/api/news'),
+        fetch('/api/local-news'),
+      ]);
 
-      if (data.articles && data.articles.length > 0) {
-        const bbc = data.articles.find((a: any) => a.source.name.toLowerCase().includes('bbc'));
-        const cnn = data.articles.find((a: any) => a.source.name.toLowerCase().includes('cnn'));
-        const reuters = data.articles.find((a: any) => a.source.name.toLowerCase().includes('reuters'));
+      const externalData = await externalResponse.json();
+      const localData = await localResponse.json();
 
-        let selection = [bbc, cnn, reuters].filter(Boolean);
+      let externalArticles: any[] = [];
+      if (externalData.articles && externalData.articles.length > 0) {
+        const bbc = externalData.articles.find((a: any) => a.source.name.toLowerCase().includes('bbc'));
+        const cnn = externalData.articles.find((a: any) => a.source.name.toLowerCase().includes('cnn'));
+        const reuters = externalData.articles.find((a: any) => a.source.name.toLowerCase().includes('reuters'));
 
-        if (selection.length < 3) {
-          const fillers = data.articles.filter((a: any) => !selection.includes(a));
-          selection = [...selection, ...fillers].slice(0, 3);
+        externalArticles = [bbc, cnn, reuters].filter(Boolean);
+
+        if (externalArticles.length < 3) {
+          const fillers = externalData.articles.filter((a: any) => !externalArticles.includes(a));
+          externalArticles = [...externalArticles, ...fillers].slice(0, 3);
         }
+      }
 
-        setArticles(selection);
+      const localArticles = Array.isArray(localData.news)
+        ? localData.news.map((item: any) => ({
+            title: item.title,
+            description: item.description,
+            url: item.post_url,
+            urlToImage: item.cover_url,
+            source: { name: item.category || 'Actualidad' },
+            publishedAt: item.published_at || new Date().toISOString(),
+          }))
+        : [];
+
+      const combined = [...localArticles, ...externalArticles].slice(0, 3);
+      if (combined.length > 0) {
+        setArticles(combined);
       }
     } catch (error) {
       console.error("Error local fetch:", error);
@@ -365,7 +384,7 @@ const [selected, setSelected] = useState<number | null>(null);
       <section className="relative h-screen w-full flex flex-col justify-center items-center text-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <video autoPlay loop muted playsInline className="w-full h-full object-cover">
-            <source src="/hero.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/djp2qzp9f/video/upload/v1775676329/IMG_2919_l50wan.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-white/50 backdrop-brightness-110"></div>
         </div>
@@ -617,8 +636,8 @@ const [selected, setSelected] = useState<number | null>(null);
       {/* FOOTER */}
       <footer className="py-20 text-center border-t border-slate-100 bg-white">
         <div className="flex justify-center gap-8 mb-10 text-[11px] font-black uppercase tracking-[0.2em]">
-          <a href="#" className="text-slate-900 hover:text-blue-600 transition-colors">LinkedIn</a>
-          <a href="#" className="text-slate-900 hover:text-blue-600 transition-colors">Instagram</a>
+          <a href="https://www.linkedin.com/company/bettertechnologies/" className="text-slate-900 hover:text-blue-600 transition-colors">LinkedIn</a>
+          <a href="https://www.instagram.com/better.technologies?igsh=cjQ1c3F4OWpoYWhq" className="text-slate-900 hover:text-blue-600 transition-colors">Instagram</a>
         </div>
         <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.3em]">
           &copy; {new Date().getFullYear()} Better Technologies. All rights reserved.

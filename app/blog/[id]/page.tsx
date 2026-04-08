@@ -1,12 +1,11 @@
-'use client'
-import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 
 type BlogPost = {
   id: string
   title: string
   description: string
+  content?: string
   post_url: string
   cover_url?: string
   category: string
@@ -15,59 +14,20 @@ type BlogPost = {
   author: string
 }
 
-export default function BlogPostPage() {
-  const params = useParams()
-  const [post, setPost] = useState<BlogPost | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [supabase, setSupabase] = useState<any>(null)
+type Props = {
+  params: Promise<{ id: string }>
+}
 
-  // Initialize Supabase client
-  useEffect(() => {
-    const initSupabase = async () => {
-      const { createClient } = await import('@/lib/supabase/client')
-      setSupabase(createClient())
-    }
-    initSupabase()
-  }, [])
+export default async function BlogPostPage({ params }: Props) {
+  const { id } = await params
 
-  // Load post
-  useEffect(() => {
-    const loadPost = async () => {
-      if (!supabase || !params?.id) return
+  const supabase = createClient()
 
-      try {
-        const { data, error } = await supabase
-          .from('blog_posts')
-          .select('*')
-          .eq('id', params.id)
-          .single()
-
-        if (error || !data) {
-          setError('Post not found')
-        } else {
-          setPost(data)
-        }
-      } catch (err) {
-        setError('Error loading post')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadPost()
-  }, [supabase, params?.id])
-
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-slate-600">Loading post...</p>
-        </div>
-      </main>
-    )
-  }
+  const { data: post, error } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .eq('id', id)
+    .single()
 
   if (error || !post) {
     return (
