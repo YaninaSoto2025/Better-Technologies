@@ -29,12 +29,26 @@ export default function BlogPage() {
         const { createClient } = await import('@/lib/supabase/client')
         console.log('Creating Supabase client...')
         const client = createClient()
-        console.log('Supabase client created, querying database...')
+        console.log('Supabase client created, testing connection...')
 
+        // First test the connection
+        const { data: testData, error: testError } = await client
+          .from('blog_posts')
+          .select('count', { count: 'exact', head: true })
+
+        console.log('Connection test result:', { count: testData, error: testError })
+
+        if (testError) {
+          throw new Error(`Connection test failed: ${testError.message}`)
+        }
+
+        console.log('Connection successful, loading posts...')
         const { data, error } = await client
           .from('blog_posts')
           .select('*')
           .order('published_at', { ascending: false })
+
+        console.log('Posts query result:', { data: data?.length || 0, error })
 
         if (error) {
           console.error('Database error:', error)
@@ -54,11 +68,11 @@ export default function BlogPage() {
     // Add a timeout to show error if loading takes too long
     const timeout = setTimeout(() => {
       if (loading) {
-        console.error('Loading timeout reached')
-        setError('Loading timeout - please check your connection')
+        console.error('Loading timeout reached - this means the database query is taking too long or failing')
+        setError('Loading timeout - please check your connection. The database query may be failing.')
         setLoading(false)
       }
-    }, 10000) // 10 seconds timeout
+    }, 15000) // Increased to 15 seconds
 
     loadPosts()
 
