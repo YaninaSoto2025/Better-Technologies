@@ -1,4 +1,6 @@
-import { createClient } from '@/lib/supabase/client'
+'use client'
+import { useState, useEffect } from 'react'
+// import { createClient } from '@/lib/supabase/client'
 
 type BlogPost = {
   id: string
@@ -11,18 +13,73 @@ type BlogPost = {
   published_at: string
 }
 
-export const revalidate = 0 
+export default function BlogPage() {
+  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [supabase, setSupabase] = useState<any>(null)
 
-export default async function BlogPage() {
-  const supabase = createClient()
-  
-  // Traemos los posts ordenados por fecha
-  const { data: posts, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .order('published_at', { ascending: false })
+  // Initialize Supabase client
+  useEffect(() => {
+    const initSupabase = async () => {
+      const { createClient } = await import('@/lib/supabase/client')
+      setSupabase(createClient())
+    }
+    initSupabase()
+  }, [])
 
-  if (error) return <div className="p-10 text-white text-center">Error al conectar con la base de datos...</div>
+  // Load posts
+  useEffect(() => {
+    const loadPosts = async () => {
+      if (!supabase) return
+
+      try {
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .order('published_at', { ascending: false })
+
+        if (error) {
+          setError('Error al conectar con la base de datos...')
+        } else {
+          setPosts(data || [])
+        }
+      } catch (err) {
+        setError('Error al cargar los posts...')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPosts()
+  }, [supabase])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white p-8 font-sans flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mx-auto mb-4"></div>
+          <p className="text-zinc-400">Cargando posts...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black text-white p-8 font-sans flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-400 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-green-500 text-black rounded-lg hover:bg-green-400 transition-colors"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-black text-white p-8 font-sans">
