@@ -19,55 +19,51 @@ export default function BlogPage() {
   const [error, setError] = useState<string | null>(null)
   const [supabase, setSupabase] = useState<any>(null)
 
-  // Initialize Supabase client
-  useEffect(() => {
-    const initSupabase = async () => {
-      try {
-        const { createClient } = await import('@/lib/supabase/client')
-        const client = createClient()
-        setSupabase(client)
-        console.log('Supabase initialized successfully')
-      } catch (err) {
-        console.error('Error initializing Supabase:', err)
-        setError('Error initializing database connection')
-        setLoading(false)
-      }
-    }
-    initSupabase()
-  }, [])
-
   // Load posts
   useEffect(() => {
     const loadPosts = async () => {
-      if (!supabase) {
-        console.log('Supabase not ready yet')
-        return
-      }
+      console.log('Starting to load posts...')
 
-      console.log('Loading posts...')
       try {
-        const { data, error } = await supabase
+        console.log('Importing Supabase client...')
+        const { createClient } = await import('@/lib/supabase/client')
+        console.log('Creating Supabase client...')
+        const client = createClient()
+        console.log('Supabase client created, querying database...')
+
+        const { data, error } = await client
           .from('blog_posts')
           .select('*')
           .order('published_at', { ascending: false })
 
         if (error) {
           console.error('Database error:', error)
-          setError('Error al conectar con la base de datos...')
+          setError(`Database error: ${error.message}`)
         } else {
-          console.log('Posts loaded:', data?.length || 0)
+          console.log('Posts loaded successfully:', data?.length || 0, 'posts')
           setPosts(data || [])
         }
       } catch (err) {
-        console.error('Error loading posts:', err)
-        setError('Error al cargar los posts...')
+        console.error('Error in loadPosts:', err)
+        setError(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`)
       } finally {
         setLoading(false)
       }
     }
 
+    // Add a timeout to show error if loading takes too long
+    const timeout = setTimeout(() => {
+      if (loading) {
+        console.error('Loading timeout reached')
+        setError('Loading timeout - please check your connection')
+        setLoading(false)
+      }
+    }, 10000) // 10 seconds timeout
+
     loadPosts()
-  }, [supabase])
+
+    return () => clearTimeout(timeout)
+  }, [])
 
   if (loading) {
     return (
