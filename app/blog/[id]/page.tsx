@@ -1,19 +1,90 @@
-import { createClient } from '@/lib/supabase/client'
+'use client'
+import { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
 import Image from 'next/image'
-import { notFound } from 'next/navigation'
 
-export const revalidate = 0
+type BlogPost = {
+  id: string
+  title: string
+  description: string
+  post_url: string
+  cover_url?: string
+  category: string
+  slug: string
+  published_at: string
+  author: string
+}
 
-export default async function BlogPostPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
+export default function BlogPostPage() {
+  const params = useParams()
+  const [post, setPost] = useState<BlogPost | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [supabase, setSupabase] = useState<any>(null)
 
-  const { data: post, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('id', params.id)
-    .single()
+  // Initialize Supabase client
+  useEffect(() => {
+    const initSupabase = async () => {
+      const { createClient } = await import('@/lib/supabase/client')
+      setSupabase(createClient())
+    }
+    initSupabase()
+  }, [])
 
-  if (error || !post) notFound()
+  // Load post
+  useEffect(() => {
+    const loadPost = async () => {
+      if (!supabase || !params?.id) return
+
+      try {
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .eq('id', params.id)
+          .single()
+
+        if (error || !data) {
+          setError('Post not found')
+        } else {
+          setPost(data)
+        }
+      } catch (err) {
+        setError('Error loading post')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPost()
+  }, [supabase, params?.id])
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading post...</p>
+        </div>
+      </main>
+    )
+  }
+
+  if (error || !post) {
+    return (
+      <main className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-black text-slate-900 mb-4">Post Not Found</h1>
+          <p className="text-slate-600 mb-8">The post you're looking for doesn't exist.</p>
+          <a
+            href="/blog"
+            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition-colors"
+          >
+            ← Back to Blog
+          </a>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="min-h-screen bg-white">
