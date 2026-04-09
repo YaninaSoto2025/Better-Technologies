@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-// import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 type BlogPost = {
   id: string
@@ -17,56 +17,36 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [supabase, setSupabase] = useState<any>(null)
 
-  // Load posts
   useEffect(() => {
     const loadPosts = async () => {
-      console.log('🚀 Starting blog page load...')
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        setError('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
+        setLoading(false)
+        return
+      }
 
       try {
-        console.log('📦 Importing Supabase...')
-        const { createClient } = await import('@/lib/supabase/client')
-
-        console.log('🔧 Creating client...')
         const client = createClient()
-
-        console.log('🧪 Testing connection with simple query...')
-        const { count, error: countError } = await client
-          .from('blog_posts')
-          .select('*', { count: 'exact', head: true })
-
-        console.log('📊 Count result:', { count, error: countError })
-
-        if (countError) {
-          throw new Error(`Count failed: ${countError.message}`)
-        }
-
-        console.log('✅ Connection works! Loading full posts...')
         const { data, error } = await client
           .from('blog_posts')
           .select('*')
           .order('published_at', { ascending: false })
 
-        console.log('📝 Full query result:', {
-          postsCount: data?.length || 0,
-          error: error?.message || null,
-          hasData: !!data
-        })
-
         if (error) {
-          throw new Error(`Query failed: ${error.message}`)
+          throw error
         }
 
-        console.log('🎉 Success! Setting posts...')
         setPosts(data || [])
         setError(null)
-
       } catch (err) {
-        console.error('❌ Error:', err)
-        setError(err instanceof Error ? err.message : 'Unknown error occurred')
+        console.error('Blog page load error:', err)
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'Unable to load blog posts at this time.'
+        )
       } finally {
-        console.log('🏁 Loading complete')
         setLoading(false)
       }
     }

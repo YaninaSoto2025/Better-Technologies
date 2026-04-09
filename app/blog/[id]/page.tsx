@@ -15,21 +15,46 @@ type BlogPost = {
 }
 
 type Props = {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { id } = await params
+  const { id } = params
 
-  const supabase = createClient()
+  let post = null
 
-  const { data: post, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('id', id)
-    .single()
+  try {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .single()
 
-  if (error || !post) {
+    if (error || !data) {
+      post = null
+    } else {
+      post = data
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unexpected error loading the post.'
+    return (
+      <main className="min-h-screen bg-white flex items-center justify-center p-8">
+        <div className="text-center max-w-xl rounded-3xl border border-slate-200 bg-slate-50 p-10 shadow-sm">
+          <h1 className="text-4xl font-black text-slate-900 mb-4">Unable to load post</h1>
+          <p className="text-slate-600 mb-8">{message}</p>
+          <a
+            href="/blog"
+            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition-colors"
+          >
+            ← Back to Blog
+          </a>
+        </div>
+      </main>
+    )
+  }
+
+  if (!post) {
     return (
       <main className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
