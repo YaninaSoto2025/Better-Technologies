@@ -165,7 +165,7 @@ export default function DashboardPage() {
     setSupabaseError(null);
 
     let finalPostUrl = blogForm.post_url;
-    let finalCoverUrl = "";
+    let finalCoverUrl = blogForm.cover_url;
 
     if (blogFile) {
       const uploadedDoc = await uploadFileToSupabase(blogFile, DOCUMENTS_BUCKET);
@@ -222,7 +222,7 @@ export default function DashboardPage() {
     setSupabaseError(null);
 
     let finalPostUrl = newsForm.post_url;
-    let finalCoverUrl = "";
+    let finalCoverUrl = newsForm.cover_url;
 
     if (newsFile) {
       const uploadedDoc = await uploadFileToSupabase(newsFile, DOCUMENTS_BUCKET);
@@ -330,8 +330,7 @@ export default function DashboardPage() {
                 <span className="text-slate-300 text-4xl">🖼️</span>
                 <span className="text-[11px] font-black uppercase tracking-widest text-slate-400">Click to upload cover image</span>
                 <p className="text-[9px] text-slate-300 font-bold uppercase tracking-widest">JPG, PNG, WEBP · Max 5MB</p>
-                <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) setFile(f); }} required />
-            </label>
+<input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) setFile(f); }} />            </label>
         )}
     </div>
   );

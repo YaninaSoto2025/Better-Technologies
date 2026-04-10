@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react"; 
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -10,7 +10,7 @@ const team = [
     role: "Chief Business Engineering Operator",
     desc: "The mind behind the 72h framework. Diego built Better Technologies from a conviction: that real innovation doesn't need a million-dollar budget — it needs relentless execution. He leads the vision, the team, and every sprint from day one.",
     initials: "DV",
-    photo: "/diego.jpeg",      
+    photo: "/diego.jpeg",
     linkedin: "https://www.linkedin.com/in/diegoe-vargas/",
   },
   {
@@ -18,7 +18,7 @@ const team = [
     role: "Organic Growth Chief Developer",
     desc: "Charlotte turns bold ideas into market movements. With a sharp eye for positioning and a data-driven approach to growth, she ensures every product we build doesn't just work — it gets noticed, adopted, and remembered.",
     initials: "CG",
-    photo: "/charlotte.jpeg",   
+    photo: "/charlotte.jpeg",
     linkedin: "https://www.linkedin.com/in/charlotte-goetz-public/",
   },
   {
@@ -26,7 +26,7 @@ const team = [
     role: "Backend & Infrastructure Chief Engineer",
     desc: "Ezequiel is the engine room of every product we ship. He architects scalable, production-ready systems at startup speed — writing clean, fast, reliable code that makes the impossible 72h timelines actually possible.",
     initials: "EA",
-    photo: "/team/ezequiel.jpg",    
+    photo: "/team/ezequiel.jpg",
     linkedin: "https://linkedin.com/",
   },
   {
@@ -34,7 +34,7 @@ const team = [
     role: "UX & Frontend Chief Developer",
     desc: "Victor is the one who makes it beautiful and fast. He crafts interfaces that feel inevitable — intuitive, polished, and ready for real users from the very first sprint. He doesn't just build UIs, he builds experiences.",
     initials: "VM",
-    photo: "/team/victor.jpg",      
+    photo: "/team/victor.jpg",
     linkedin: "https://www.linkedin.com/in/demenezesvictor/",
   },
   {
@@ -42,7 +42,7 @@ const team = [
     role: "Data Science Chief Operator",
     desc: "Yanina speaks the language of data fluently — and translates it into decisions that matter. She extracts signal from noise, builds intelligence layers into every product, and ensures that what we ship isn't just functional — it's smart.",
     initials: "YS",
-    photo: "/team/yanina.jpg",      
+    photo: "/team/yanina.jpg",
     linkedin: "https://www.linkedin.com/in/yanina-soto/",
   },
 ];
@@ -144,27 +144,27 @@ const NewsSection = () => {
 
         const externalArticles: any[] = Array.isArray(externalData?.articles)
           ? (() => {
-              const bbc = externalData.articles.find((a: any) => a.source?.name?.toLowerCase().includes('bbc'));
-              const cnn = externalData.articles.find((a: any) => a.source?.name?.toLowerCase().includes('cnn'));
-              const reuters = externalData.articles.find((a: any) => a.source?.name?.toLowerCase().includes('reuters'));
-              const selected = [bbc, cnn, reuters].filter(Boolean);
-              if (selected.length < 3) {
-                const fillers = externalData.articles.filter((a: any) => !selected.includes(a));
-                return [...selected, ...fillers].slice(0, 3);
-              }
-              return selected;
-            })()
+            const bbc = externalData.articles.find((a: any) => a.source?.name?.toLowerCase().includes('bbc'));
+            const cnn = externalData.articles.find((a: any) => a.source?.name?.toLowerCase().includes('cnn'));
+            const reuters = externalData.articles.find((a: any) => a.source?.name?.toLowerCase().includes('reuters'));
+            const selected = [bbc, cnn, reuters].filter(Boolean);
+            if (selected.length < 3) {
+              const fillers = externalData.articles.filter((a: any) => !selected.includes(a));
+              return [...selected, ...fillers].slice(0, 3);
+            }
+            return selected;
+          })()
           : [];
 
         const localArticles = Array.isArray(localData?.news)
           ? localData.news.map((item: any) => ({
-              title: item.title,
-              description: item.description,
-              url: item.post_url,
-              urlToImage: item.cover_url,
-              source: { name: item.category || 'Actualidad' },
-              publishedAt: item.published_at || new Date().toISOString(),
-            }))
+            title: item.title,
+            description: item.description,
+            url: item.post_url,
+            urlToImage: item.cover_url,
+            source: { name: item.category || 'Actualidad' },
+            publishedAt: item.published_at || new Date().toISOString(),
+          }))
           : [];
 
         const combined = [...localArticles, ...externalArticles].slice(0, 3);
@@ -217,7 +217,7 @@ const NewsSection = () => {
     <section className="py-24 bg-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-8">
-          
+
           <div className="hidden md:block w-48"></div>
 
           <div className="flex-1 flex flex-col items-center text-center">
@@ -254,8 +254,8 @@ const NewsSection = () => {
           >
             <div className="relative h-64 md:h-80 md:w-1/2 overflow-hidden bg-slate-100">
               {currentArticle.urlToImage ? (
-                <img 
-                  src={currentArticle.urlToImage} 
+                <img
+                  src={currentArticle.urlToImage}
                   alt={currentArticle.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
@@ -280,7 +280,7 @@ const NewsSection = () => {
                   {currentArticle.description || "Click to read the full coverage of this digital transformation update."}
                 </p>
               </div>
-              
+
               <div className="flex justify-between items-center pt-4 border-t border-slate-50">
                 <span className="text-[10px] font-bold uppercase text-slate-400">
                   {new Date(currentArticle.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -304,11 +304,10 @@ const NewsSection = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
-                  className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
-                    index === currentIndex
+                  className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${index === currentIndex
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+                    }`}
                 >
                   {new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 </button>
@@ -367,6 +366,7 @@ const ChatSection = () => {
     handleWhatsApp(selection);
   };
 
+
   return (
     <section className="w-full py-24 bg-white border-t border-slate-100">
       <div className="max-w-4xl mx-auto px-6">
@@ -396,7 +396,7 @@ const ChatSection = () => {
               <p className="text-xl text-slate-600 mb-8 font-light">
                 How can <span className="text-slate-900 font-semibold underline decoration-blue-600 underline-offset-4">the team</span> help you today?
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {options.map((opt) => (
                   <button
                     type="button"
@@ -455,20 +455,11 @@ export default function Home() {
     const video = heroVideoRef.current;
     if (!video) return;
     video.muted = true;
-    video.style.cssText = `
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100% !important;
-  object-fit: cover;
-  z-index: 0;
-`;
-    video.play().catch(() => {});
+    video.play().catch(() => { });
   }, []);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<number | null>(null); 
+  const [selected, setSelected] = useState<number | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
@@ -482,9 +473,20 @@ export default function Home() {
     { name: "About", href: "#about" },
     { name: "Blog", href: "/blog" },
   ];
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
-    <main className="relative w-full bg-white" id="top">
+    <main className="relative w-full bg-white">
 
       {/* HEADER */}
       <header className="fixed top-0 left-0 w-full flex justify-between items-center px-6 md:px-24 py-5 z-[50] backdrop-blur-md bg-black/90 border-b border-white/10">
@@ -509,339 +511,337 @@ export default function Home() {
         </button>
       </header>
 
-    {/* HERO SECTION */}
-<section 
-  className="relative w-full overflow-hidden" 
-  style={{ height: '100dvh', paddingTop: '60px' }}
-  id="top"
->
-
-  {/* VIDEO */}
-  <video 
+      {/* HERO SECTION */}
+      <section
+        className="relative w-full h-screen overflow-hidden"
+        id="top"
+      >
+        <video
+  key={isMobile ? "mobile" : "desktop"}
   ref={heroVideoRef}
-  autoPlay 
-  loop 
-  muted 
-  playsInline 
+  className="absolute inset-0 w-full h-full object-cover scale-110"
+  autoPlay
+  loop
+  muted
+  playsInline
   preload="auto"
 >
-  <source 
-    src="https://res.cloudinary.com/djp2qzp9f/video/upload/q_auto,vc_h264/v1775676329/IMG_2919_l50wan.mp4" 
-    type="video/mp4" 
+        
+          <source
+    src="https://res.cloudinary.com/djp2qzp9f/video/upload/c_fill,ar_16:9,q_auto/f_auto/v1775676329/IMG_2919_l50wan.mp4"
+    type="video/mp4"
   />
-</video>
+        </video>
 
-  {/* OVERLAY */}
-  <div className="absolute inset-0 bg-white/10" style={{ zIndex: 1 }} />
+        <div className="absolute inset-0 bg-white/10 z-[1]" />
 
-  {/* CONTENIDO */}
-  <div 
-    className="flex flex-col items-center justify-center w-full px-6 py-12 text-center"
-    style={{ position: 'relative', zIndex: 2, height: '100%' }}
-  >
-    <p className="text-blue-600 uppercase tracking-[0.4em] mb-3 text-[10px] font-black">
-      What we are?
-    </p>
-    <h1 className="text-3xl md:text-8xl font-black leading-[1] tracking-tighter max-w-4xl text-slate-900 uppercase">
-      We operate LATAM for <br /> Global companies
-    </h1>
-    <p className="mt-3 text-slate-500 text-[9px] md:text-[10px] uppercase tracking-widest font-bold">
-      Nearshoring Operator · Supply Chain Partner · Talent Hub · Entry Ops Partner
-    </p>
-    <p className="mt-4 text-sm md:text-xl text-slate-700 max-w-xl mx-auto font-medium leading-tight">
-      20th century told us the future would be built somewhere else<br />
-      <span className="text-slate-900 font-bold text-base md:text-xl">We think Differently</span>
-    </p>
-    <a 
-      href="/latam40.pdf" 
-      target="_blank" 
-      className="mt-8 inline-block px-8 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg uppercase tracking-widest text-[10px] transition-transform active:scale-95"
+        <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center px-6 text-center">
+          <p className="text-blue-600 uppercase tracking-[0.4em] mb-3 text-[10px] font-black">
+            What we are?
+          </p>
+          <h1 className="text-3xl md:text-8xl font-black leading-[1] tracking-tighter max-w-4xl text-slate-900 uppercase">
+            We operate LATAM for <br /> Global companies
+          </h1>
+          <p className="mt-3 text-slate-500 text-[9px] md:text-[10px] uppercase tracking-widest font-bold">
+            Nearshoring Operator · Supply Chain Partner · Talent Hub · Entry Ops Partner
+          </p>
+          <p className="mt-4 text-sm md:text-xl text-slate-700 max-w-xl mx-auto font-medium leading-tight">
+            20th century told us the future would be built somewhere else<br />
+            <span className="text-slate-900 font-bold text-base md:text-xl">We think Differently</span>
+          </p>
+
+         <a href="/latam40.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 inline-block px-8 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg uppercase tracking-widest text-[10px] transition-transform active:scale-95"
     >
-      LATAM 4.0 - 21st century&apos;s golden child
-    </a>
-  </div>
-</section>
+          LATAM 4.0 - 21st century&apos;s golden child
+        </a>
+      </div>
+    </section>
 
-      {/* WHY WE EXIST */}
-      <section id="what-we-are" className="py-20 px-6 text-center bg-white border-b border-slate-100">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-blue-600 uppercase tracking-widest text-xs font-bold mb-8">Why we exist</h2>
-          <p className="text-4xl md:text-6xl font-bold max-w-5xl mx-auto leading-tight tracking-tight text-slate-800 italic">
-            Because times of change require strategic capacities —<br /> and Latin America is the most underleveraged opportunity to build them.
-          </p>
-        </div>
-      </section>
+      {/* WHY WE EXIST */ }
+  <section id="what-we-are" className="py-20 px-6 text-center bg-white border-b border-slate-100">
+    <div className="max-w-5xl mx-auto">
+      <h2 className="text-blue-600 uppercase tracking-widest text-xs font-bold mb-8">Why we exist</h2>
+      <p className="text-4xl md:text-6xl font-bold max-w-5xl mx-auto leading-tight tracking-tight text-slate-800 italic">
+        Because times of change require strategic capacities —<br /> and Latin America is the most underleveraged opportunity to build them.
+      </p>
+    </div>
+  </section>
 
-      {/* NEWS FEED */}
-      <NewsSection />
+  {/* NEWS FEED */ }
+  <NewsSection />
 
-      {/* TARGET CLIENT: MITTELSTAND */}
-      <section id="mittelstand" className="py-40 px-6 bg-slate-50 border-y border-slate-200">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-          <div>
-            <h2 className="text-4xl md:text-6xl font-black mb-8 text-slate-900 leading-[1.1] tracking-tighter">
-              Our Customer: <br />
-              <span className="text-blue-600">Medium Sized<br />Global Companies</span>
-            </h2>
+  {/* TARGET CLIENT: MITTELSTAND */ }
+  <section id="mittelstand" className="py-40 px-6 bg-slate-50 border-y border-slate-200">
+    <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+      <div>
+        <h2 className="text-4xl md:text-6xl font-black mb-8 text-slate-900 leading-[1.1] tracking-tighter">
+          Our Customer: <br />
+          <span className="text-blue-600">Medium Sized<br />Global Companies</span>
+        </h2>
 
-            <ul className="space-y-6 text-xl text-slate-600 font-medium mb-10">
-              <li className="flex items-center gap-4">
-                <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
-                50–500 employees
-              </li>
-              <li className="flex items-center gap-4">
-                <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
-                Ops in different countries / regions
-              </li>
-              <li className="flex items-center gap-4">
-                <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
-                Long Supply Chain dependent
-              </li>
-              <li className="flex items-center gap-4">
-                <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
-                Traditional business
-              </li>
-            </ul>
+        <ul className="space-y-6 text-xl text-slate-600 font-medium mb-10">
+          <li className="flex items-center gap-4">
+            <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
+            50–500 employees
+          </li>
+          <li className="flex items-center gap-4">
+            <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
+            Ops in different countries / regions
+          </li>
+          <li className="flex items-center gap-4">
+            <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
+            Long Supply Chain dependent
+          </li>
+          <li className="flex items-center gap-4">
+            <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
+            Traditional business
+          </li>
+        </ul>
 
-            <h3 className="text-sm text-slate-400 italic font-normal tracking-wide">
-              Example: industrial manufacturers, retail, logistics, services.
-            </h3>
-          </div>
+        <h3 className="text-sm text-slate-400 italic font-normal tracking-wide">
+          Example: industrial manufacturers, retail, logistics, services.
+        </h3>
+      </div>
 
-          <div className="bg-white p-12 rounded-3xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
-            <h3 className="text-xl font-bold mb-6 uppercase tracking-wider text-slate-900">
-              The Problem we solve
-            </h3>
+      <div className="bg-white p-12 rounded-3xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+        <h3 className="text-xl font-bold mb-6 uppercase tracking-wider text-slate-900">
+          The Problem we solve
+        </h3>
 
-            <p className="text-slate-600 text-lg leading-relaxed mb-10">
-              Long supply chains (Asia / Middle East) are falling due to conflict. Latin America is the obvious alternative — but remains impossible to execute.
-            </p>
+        <p className="text-slate-600 text-lg leading-relaxed mb-10">
+          Long supply chains (Asia / Middle East) are falling due to conflict. Latin America is the obvious alternative — but remains impossible to execute.
+        </p>
 
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center">
-                <p className="text-base line-through decoration-red-600 decoration-2 font-bold italic text-slate-400">
-                  BCG Digital Ventures
-                </p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-base line-through decoration-red-600 decoration-2 font-bold italic text-slate-400">
-                  McKinsey &amp; Company
-                </p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-base line-through decoration-red-600 decoration-2 font-bold italic text-slate-400">
-                  Accenture
-                </p>
-              </div>
-            </div>
-            <div className="pt-6 border-t border-slate-100">
-              <p className="text-sm font-bold italic text-slate-900 tracking-tight">
-                Typical tickets: <span className="text-blue-600">€150k - €1M+</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING */}
-      <section id="pricing" className="py-40 px-6 bg-white">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-black mb-20 text-slate-900 uppercase tracking-tighter">
-            What you <span className="text-blue-600">can</span> afford
-          </h2>
-          <div className="grid md:grid-cols-3 gap-12 text-left">
-
-            {/* TIER 1 */}
-            <div className="group border-2 border-slate-100 p-12 rounded-3xl hover:border-blue-600 transition-all duration-500 bg-slate-50/50">
-              <div className="flex flex-col gap-4 mb-10">
-                <h3 className="text-2xl font-bold text-slate-900 uppercase">72h Validation Challenge</h3>
-                <span className="self-start bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-black italic">€3k – €10k</span>
-              </div>
-              <ul className="space-y-4 text-slate-600">
-                <li className="font-bold flex items-start gap-2"><span className="text-blue-600 mt-0.5">→</span> Opportunity Validation: Problem + Executable Solution hypothesis</li>
-                <li className="font-bold flex items-start gap-2"><span className="text-blue-600 mt-0.5">→</span> Feasibility Study: Financial overview + Operations forecast</li>
-              </ul>
-            </div>
-
-            {/* TIER 2 */}
-            <div className="group border-2 border-slate-100 p-12 rounded-3xl hover:border-blue-600 transition-all duration-500 bg-slate-50/50 shadow-xl shadow-slate-100">
-              <div className="flex flex-col gap-4 mb-10">
-                <h3 className="text-2xl font-bold text-slate-900 uppercase">MVP Stage — 90 days</h3>
-                <span className="self-start bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-black italic">€30k – €120k</span>
-              </div>
-              <ul className="space-y-4 text-slate-600">
-                <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Solution engineering</li>
-                <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Functional MVP</li>
-                <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Beta testing (with real users)</li>
-              </ul>
-            </div>
-
-            {/* TIER 3 — NUEVO */}
-            <div className="group border-2 border-slate-100 p-12 rounded-3xl hover:border-blue-600 transition-all duration-500 bg-slate-50/50">
-              <div className="flex flex-col gap-4 mb-10">
-                <h3 className="text-2xl font-bold text-slate-900 uppercase">Growth / Scale</h3>
-                <span className="self-start bg-slate-900 text-white px-4 py-1 rounded-full text-xs font-black italic">Tailor made</span>
-              </div>
-              <ul className="space-y-4 text-slate-600">
-                <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Local + Digital operation</li>
-                <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Success oriented business execution</li>
-                <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Reduced operational costs</li>
-                <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Scale faster and better</li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ABOUT US */}         
-      <section id="about" className="py-24 px-6 bg-white border-t border-slate-100">
-        <div className="max-w-4xl mx-auto">
-
-          <p className="text-blue-600 uppercase tracking-[0.25em] text-[10px] font-black mb-3">
-            About our Team
-          </p>
-
-          <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-none uppercase mb-6">
-            High{" "}
-            <em className="italic underline decoration-blue-100">Performance execution team</em>{" "}
-            built in high 
-            <br />
-            pressure environments.
-          </h2>
-
-          <div className="border-l-[3px] border-blue-600 pl-5 bg-slate-50 py-4 pr-5 rounded-r-2xl mb-8">
-            <p className="text-slate-900 font-black italic text-sm leading-relaxed tracking-tight">
-              &ldquo;We were told the future would be built somewhere else.
-              <br />
-              <span className="text-blue-600">We chose to prove them wrong.&rdquo;</span>
+        <div className="space-y-4 mb-8">
+          <div className="flex items-center">
+            <p className="text-base line-through decoration-red-600 decoration-2 font-bold italic text-slate-400">
+              BCG Digital Ventures
             </p>
           </div>
+          <div className="flex items-center">
+            <p className="text-base line-through decoration-red-600 decoration-2 font-bold italic text-slate-400">
+              McKinsey &amp; Company
+            </p>
+          </div>
+          <div className="flex items-center">
+            <p className="text-base line-through decoration-red-600 decoration-2 font-bold italic text-slate-400">
+              Accenture
+            </p>
+          </div>
+        </div>
+        <div className="pt-6 border-t border-slate-100">
+          <p className="text-sm font-bold italic text-slate-900 tracking-tight">
+            Typical tickets: <span className="text-blue-600">€150k - €1M+</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <AnimatePresence mode="wait">
-            {selected !== null && (
-              <motion.div
-                key={selected}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                className="flex items-center gap-5 border border-slate-100 rounded-3xl p-5 mb-6 hover:border-blue-600/30 transition-colors duration-300"
-              >
-                <Avatar member={team[selected]} />
+  {/* PRICING */ }
+  <section id="pricing" className="py-40 px-6 bg-white">
+    <div className="max-w-7xl mx-auto text-center">
+      <h2 className="text-4xl md:text-5xl font-black mb-20 text-slate-900 uppercase tracking-tighter">
+        What you <span className="text-blue-600">can</span> afford
+      </h2>
+      <div className="grid md:grid-cols-3 gap-12 text-left">
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-slate-900 font-black uppercase tracking-tight text-sm">
-                        {team[selected].name}
-                      </p>
-                      <p className="text-blue-600 font-black uppercase tracking-[0.15em] text-[10px] mt-0.5 mb-2">
-                        {team[selected].role}
-                      </p>
-                    </div>
+        {/* TIER 1 */}
+        <div className="group border-2 border-slate-100 p-12 rounded-3xl hover:border-blue-600 transition-all duration-500 bg-slate-50/50">
+          <div className="flex flex-col gap-4 mb-10">
+            <h3 className="text-2xl font-bold text-slate-900 uppercase">72h Validation Challenge</h3>
+            <span className="self-start bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-black italic">€3k – €10k</span>
+          </div>
+          <ul className="space-y-4 text-slate-600">
+            <li className="font-bold flex items-start gap-2"><span className="text-blue-600 mt-0.5">→</span> Opportunity Validation: Problem + Executable Solution hypothesis</li>
+            <li className="font-bold flex items-start gap-2"><span className="text-blue-600 mt-0.5">→</span> Feasibility Study: Financial overview + Operations forecast</li>
+          </ul>
+        </div>
 
-                    <a
-                      href={team[selected].linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1.5 hover:border-blue-600 hover:bg-blue-50 transition-all flex-shrink-0"
-                    >
-                      <LinkedInIcon />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600">
-                        LinkedIn
-                      </span>
-                    </a>
-                  </div>
+        {/* TIER 2 */}
+        <div className="group border-2 border-slate-100 p-12 rounded-3xl hover:border-blue-600 transition-all duration-500 bg-slate-50/50 shadow-xl shadow-slate-100">
+          <div className="flex flex-col gap-4 mb-10">
+            <h3 className="text-2xl font-bold text-slate-900 uppercase">MVP Stage — 90 days</h3>
+            <span className="self-start bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-black italic">€30k – €120k</span>
+          </div>
+          <ul className="space-y-4 text-slate-600">
+            <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Solution engineering</li>
+            <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Functional MVP</li>
+            <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Beta testing (with real users)</li>
+          </ul>
+        </div>
 
-                  <p className="text-slate-500 text-xs leading-relaxed font-medium">
-                    {team[selected].desc}
+        {/* TIER 3 — NUEVO */}
+        <div className="group border-2 border-slate-100 p-12 rounded-3xl hover:border-blue-600 transition-all duration-500 bg-slate-50/50">
+          <div className="flex flex-col gap-4 mb-10">
+            <h3 className="text-2xl font-bold text-slate-900 uppercase">Growth / Scale</h3>
+            <span className="self-start bg-slate-900 text-white px-4 py-1 rounded-full text-xs font-black italic">Tailor made</span>
+          </div>
+          <ul className="space-y-4 text-slate-600">
+            <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Local + Digital operation</li>
+            <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Success oriented business execution</li>
+            <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Reduced operational costs</li>
+            <li className="font-bold flex items-center gap-2"><span className="text-blue-600">✓</span> Scale faster and better</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  {/* ABOUT US */}
+<section id="about" className="py-12 md:py-16 px-6 bg-white border-t border-slate-100">
+  <div className="max-w-4xl mx-auto">
+
+    <p className="text-blue-600 uppercase tracking-[0.25em] text-[10px] font-black mb-2">
+      About our Team
+    </p>
+
+    <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-[0.9] uppercase mb-6">
+      High{" "}
+      <em className="italic underline decoration-blue-100">Performance execution team</em>{" "}
+      built in high
+      <br />
+      pressure environments.
+    </h2>
+
+    <div className="border-l-[3px] border-blue-600 pl-5 bg-slate-50 py-4 pr-5 rounded-r-2xl mb-8">
+      <p className="text-slate-900 font-black italic text-sm leading-relaxed tracking-tight">
+        &ldquo;We were told the future would be built somewhere else.
+        <br />
+        <span className="text-blue-600">We chose to prove them wrong.&rdquo;</span>
+      </p>
+    </div>
+
+    
+
+      <AnimatePresence mode="wait">
+        {selected !== null && (
+          <motion.div
+            key={selected}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-5 border border-slate-100 rounded-3xl p-5 mb-6 hover:border-blue-600/30 transition-colors duration-300"
+          >
+            <Avatar member={team[selected]} />
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-slate-900 font-black uppercase tracking-tight text-sm">
+                    {team[selected].name}
+                  </p>
+                  <p className="text-blue-600 font-black uppercase tracking-[0.15em] text-[10px] mt-0.5 mb-2">
+                    {team[selected].role}
                   </p>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
 
-          <div className="flex flex-wrap gap-2">
-            {team.map((member, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setSelected(selected === i ? null : i)}
-                className={`text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full border-2 transition-all duration-200 active:scale-95
-                  ${selected === i
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-white text-slate-500 border-slate-200 hover:border-blue-600 hover:text-blue-600"
-                  }`}
-              >
-                {member.name.split(" ")[0]} {member.name.split(" ")[1]}
-              </button>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* CHAT SECTION */}
-      <ChatSection />
-
-      {/* BLOG CTA SECTION */}
-      <section className="py-24 px-6 bg-gradient-to-br from-blue-600 to-blue-700">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter">
-            Stay Updated with <span className="italic underline decoration-white decoration-2">Our Latest Insights</span>
-          </h2>
-          <p className="text-lg text-blue-100 mb-10 font-medium max-w-2xl mx-auto">
-            Explore our blog for industry trends, tech updates, and innovation stories from the Better Technologies team.
-          </p>
-          <a href="/blog" className="inline-block">
-            <button type="button" className="px-12 py-5 bg-white text-blue-600 rounded-full font-black uppercase tracking-widest hover:bg-blue-50 transition-all shadow-2xl shadow-blue-900/30 text-lg hover:scale-105 active:scale-95">
-              Read the Blog
-            </button>
-          </a>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-20 text-center border-t border-slate-100 bg-white">
-        <div className="flex justify-center gap-8 mb-10 text-[11px] font-black uppercase tracking-[0.2em]">
-          <a href="https://www.linkedin.com/company/bettertechnologies/" className="text-slate-900 hover:text-blue-600 transition-colors">LinkedIn</a>
-          <a href="https://www.instagram.com/better.technologies?igsh=cjQ1c3F4OWpoYWhq" className="text-slate-900 hover:text-blue-600 transition-colors">Instagram</a>
-        </div>
-        <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.3em]">
-          &copy; {new Date().getFullYear()} Better Technologies. All rights reserved.
-        </p>
-      </footer>
-
-      {/* MOBILE MENU OVERLAY */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-[55] bg-black flex flex-col items-center justify-center gap-8"
-          >
-            <nav className="flex flex-col items-center gap-6">
-              {menuItems.map((item) => (
                 <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-white text-3xl font-black uppercase tracking-tighter hover:text-blue-600 transition-colors"
+                  href={team[selected].linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1.5 hover:border-blue-600 hover:bg-blue-50 transition-all flex-shrink-0"
                 >
-                  {item.name}
+                  <LinkedInIcon />
+                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600">
+                    LinkedIn
+                  </span>
                 </a>
-              ))}
-            </nav>
-            
-            <div className="absolute bottom-12 flex gap-8">
-               <a href="https://www.linkedin.com/company/bettertechnologies/" className="text-white/50 text-[10px] font-black uppercase tracking-widest">LinkedIn</a>
-               <a href="https://www.instagram.com/better.technologies" className="text-white/50 text-[10px] font-black uppercase tracking-widest">Instagram</a>
+              </div>
+
+              <p className="text-slate-500 text-xs leading-relaxed font-medium">
+                {team[selected].desc}
+              </p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </main>
+
+      <div className="flex flex-wrap gap-2">
+        {team.map((member, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setSelected(selected === i ? null : i)}
+            className={`text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full border-2 transition-all duration-200 active:scale-95
+                  ${selected === i
+                ? "bg-blue-600 text-white border-blue-600"
+                : "bg-white text-slate-500 border-slate-200 hover:border-blue-600 hover:text-blue-600"
+              }`}
+          >
+            {member.name.split(" ")[0]} {member.name.split(" ")[1]}
+          </button>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  {/* CHAT SECTION */ }
+  <ChatSection />
+
+ {/* BLOG CTA SECTION */}
+<section className="py-24 bg-white border-t border-slate-100">
+  <div className="max-w-4xl mx-auto text-center px-6">
+    <p className="text-blue-600 uppercase tracking-[0.2em] text-[10px] mb-4 font-bold">Stay updated with our</p>
+    <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 uppercase tracking-tighter">
+      Latest <span className="italic underline decoration-blue-100">Insights</span>
+    </h2>
+    <p className="text-slate-500 text-lg mb-12 max-w-2xl mx-auto">
+Explore our blog for industry trends,tech updates,and innovation stories from the Better Technologies team.</p>
+    <a href="/blog" className="inline-block">
+      <button type="button" className="px-10 py-4 bg-slate-900 text-white rounded-full font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl text-xs hover:scale-105 active:scale-95">
+        Read the Blog 
+      </button>
+    </a>
+  </div>
+</section>
+
+  {/* FOOTER */ }
+  <footer className="py-20 text-center border-t border-slate-100 bg-white">
+    <div className="flex justify-center gap-8 mb-10 text-[11px] font-black uppercase tracking-[0.2em]">
+      <a href="https://www.linkedin.com/company/bettertechnologies/" className="text-slate-900 hover:text-blue-600 transition-colors">LinkedIn</a>
+      <a href="https://www.instagram.com/better.technologies?igsh=cjQ1c3F4OWpoYWhq" className="text-slate-900 hover:text-blue-600 transition-colors">Instagram</a>
+    </div>
+    <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.3em]">
+      &copy; {new Date().getFullYear()} Better Technologies. All rights reserved.
+    </p>
+  </footer>
+
+  {/* MOBILE MENU OVERLAY */ }
+  <AnimatePresence>
+    {isOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        className="fixed inset-0 z-[55] bg-black flex flex-col items-center justify-center gap-8"
+      >
+        <nav className="flex flex-col items-center gap-6">
+          {menuItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              onClick={() => setIsOpen(false)}
+              className="text-white text-3xl font-black uppercase tracking-tighter hover:text-blue-600 transition-colors"
+            >
+              {item.name}
+            </a>
+          ))}
+        </nav>
+
+        <div className="absolute bottom-12 flex gap-8">
+          <a href="https://www.linkedin.com/company/bettertechnologies/" className="text-white/50 text-[10px] font-black uppercase tracking-widest">LinkedIn</a>
+          <a href="https://www.instagram.com/better.technologies" className="text-white/50 text-[10px] font-black uppercase tracking-widest">Instagram</a>
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+    </main >
   );
 }

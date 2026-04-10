@@ -16,6 +16,7 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.cnn.com' },
       { protocol: 'https', hostname: '**.reuters.com' },
       { protocol: 'https', hostname: '**.static.bbc.co.uk' },
+       { protocol: 'https', hostname: '**.supabase.co' },
     ],
   },
 };
